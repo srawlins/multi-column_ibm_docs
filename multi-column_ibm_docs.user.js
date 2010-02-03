@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Multi-column IBM Documents
 // @namespace      n/a
-// @description    Multi-columns IBM Support Docs
+// @description    Multi-columns IBM Support Documents
 // @include        http://www-01.ibm.com/support/docview.wss*
 // ==/UserScript==
 
@@ -109,13 +109,14 @@ var content = document.getElementById('content');
 var x = self.innerWidth;
 var y = self.innerHeight;
 
-if ( x > 1236 ) {
+//if ( x > 1246 ) {
   makeMultiColumn();
-}
+//}
 
 hideNavSetup();
 tt2pre();
 cleanupBorderedTables();
+removeSingleChildUls();
 squeezeWideTables();
 
 function makeMultiColumn() {
@@ -166,7 +167,7 @@ function makeMultiColumn() {
     content_table_parent.setAttribute("width", 610+443+443+40+13);
     content_table.setAttribute("width",        610+443+443+40+13);
     var content = document.getElementById('content');
-    content.setAttribute("width",              423+443+443+40+13);
+    content.setAttribute("width",              443+443+443+40+13);
     content.style.paddingRight = "13px";
     
     if ( document.getElementById('multi-column-div') == null) {
@@ -348,6 +349,31 @@ function removeEmptyChildNodes(node) {
   }
 }
 
+function removeSingleChildUls() {
+  var uls = document.evaluate("//ul",
+    document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  
+  for (var i = uls.snapshotLength - 1; i >= 0; i--) {
+    var ul = uls.snapshotItem(i);
+    var hasLi = false;
+    for (var j = ul.childNodes.length - 1; j >= 0; j--) {
+      if ( ul.childNodes[j].nodeName == "LI" ) { hasLi = true; }
+    }
+    if ( hasLi ) { continue; }
+    
+    ulReplacement = document.createElement('div');
+    ulReplacement.style.paddingLeft = "20px";
+    ul.parentNode.insertBefore(ulReplacement, ul);
+    ulReplacement.innerHTML = ul.innerHTML;
+    ul.parentNode.removeChild(ul);
+    
+    // for (var j = ul.childNodes.length - 1; j >= 0; j--) {
+      // child = ul.childNodes[j];
+      // ul.parentNode.insertBefore(child, ul);
+    // }
+  }
+}
+
 function hideNavSetup() {
   var ibmWelcome = document.getElementById('ibm-welcome-message');
   var hideRightNavSpan = document.createElement('span');
@@ -368,8 +394,8 @@ function hideNavSetup() {
         no_print.style.display='inline';
         toggleNav.innerHTML='Hide Navigation';
         makeMultiColumn();
-        adjust_content_table_width( 150 );
-        adjust_v14_body_table_width( 300 );
+        //adjust_content_table_width( 150 );
+        //adjust_v14_body_table_width( 310 );
       } else {
         rightNav.style.display='none';
         navigation.style.display='none';
@@ -377,7 +403,7 @@ function hideNavSetup() {
         toggleNav.innerHTML='Show Navigation';
         makeMultiColumn();
         adjust_content_table_width( -150 );
-        adjust_v14_body_table_width( -300 );
+        adjust_v14_body_table_width( -310 );
       }
     },
     true
@@ -434,8 +460,8 @@ function tt2pre() {
     if ( tt.parentNode.nodeName == "P" ) {
       tt.parentNode.parentNode.replaceChild(pre, tt.parentNode);
     } else {
-      //tt.parentNode.replaceChild(pre, tt);
-      tt.parentNode.insertBefore(pre, tt);
+      tt.parentNode.replaceChild(pre, tt);
+      //tt.parentNode.insertBefore(pre, tt);
     }
   }
   

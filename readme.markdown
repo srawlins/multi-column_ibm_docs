@@ -32,6 +32,7 @@ In trying to convert all `<table><tr><td>CONTENT</td></tr></table>` blocks to `<
 
 +   Blocks of `<tt>...</tt><tt>...</tt><tt>...</tt>...` without line breaks. These really should just be one `<tt>`. So in converting to `<pre>`'s, I did so. Let me know if its ugly / broken anywhere.
 +   `<th>` with "ALL CAPS" are converted to "Sentence case". These appeared randomly.
++   Some `<pre>` tags end up being the sole element in a `<ul>`, not even inside a `<li>` or anything. These are converted into `<div>`'s with `padding-left: 20px;`. [Example](http://www-01.ibm.com/support/docview.wss?rs=3352&context=SSDV2W&dc=D400&uid=swg24023138&loc=en_US&cs=UTF-8&lang=en&rss=ct3352rational).
 
 Plans
 -----
@@ -41,5 +42,4 @@ There are more fixes and squeezings that need to be done:
 +   Convert any `<th>` tags that aren't in the 1st row to `<td>` tags.
 +   Remove Download Director links.
 +   Convert dates from `mm/dd/yyyy` to `mm/dd/yy`.
-+   In converting `<tt>` to `<pre>` tags, I set the `<pre>` tags' width to always be 443. However, some of these tags are in (nested) lists. I need to find the calculated margin from the left of `#multi-column-div` and compensate. [Example](http://www-01.ibm.com/support/docview.wss?rs=3352&context=SSDV2W&dc=D400&uid=swg24023138&loc=en_US&cs=UTF-8&lang=en&rss=ct3352rational)
-+   Some `<pre>` tags end up being the sole element in a `<ul>`, not even inside a `<li>` or anything... So it inherits the padding totally unneccessarily. [Example](http://www-01.ibm.com/support/docview.wss?rs=3352&context=SSDV2W&dc=D400&uid=swg24023138&loc=en_US&cs=UTF-8&lang=en&rss=ct3352rational)
++   In converting `<tt>` to `<pre>` tags, I set the `<pre>` tags' width to always be 443. However, some of these tags are in (nested) lists. I need to find the calculated margin from the left of `#multi-column-div` and compensate. [Example](http://www-01.ibm.com/support/docview.wss?rs=3352&context=SSDV2W&dc=D400&uid=swg24023138&loc=en_US&cs=UTF-8&lang=en&rss=ct3352rational).
