@@ -103,16 +103,12 @@ var content_table_parent = document.evaluate("tbody/tr/td[3]",
       v14_body_table, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 content_table_parent.id = "content-table-parent";
 var content_table = document.getElementById('content-table');
-
 var content = document.getElementById('content');
 
 var x = self.innerWidth;
 var y = self.innerHeight;
 
-//if ( x > 1246 ) {
-  makeMultiColumn();
-//}
-
+makeMultiColumn();
 hideNavSetup();
 tt2pre();
 cleanupBorderedTables();
@@ -596,6 +592,20 @@ function squeezeWideTables() {
         tr = trs.getElementsByTagName("tr")[j];
         td = tr.getElementsByTagName("td")[size_bytes_idx];
         td.innerHTML = td.innerHTML*1.0/1024.0;
+      }
+    }
+    
+    width = computedWidth( table );
+    if ( width < 443 + 10 ) { continue; }
+    
+    // Starting at j = 1 skips the Header row
+    for ( var j = 1; j < trs.children.length; j++ ) {
+      tr = trs.getElementsByTagName("tr")[j];
+      ths = tr.getElementsByTagName("th");
+      for ( var k in ths ) {
+        var td = document.createElement("td");
+        td.innerHTML = ths[k].innerHTML;
+        ths[k].parentNode.replaceChild(td, ths[k]);
       }
     }
   }
