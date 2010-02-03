@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+
+cp -f multi-column_ibm_docs.user.js "/cygdrive/c/Documents and Settings/Administrator/Application Data/Mozilla/Firefox/Profiles/mvu9l7zx.default/gm_scripts/multi-column_ibm_docs/"
