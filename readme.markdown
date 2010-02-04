@@ -23,8 +23,10 @@ Adjustments
     -   `<th>` with "ALL CAPS" are converted to "Sentence case".
     -   "Size (bytes)" columns are converted to KB if all values are greater than 1024, or MB if all values are greater than 1024*1024.
     -   Converted any `<th>` tags that aren't in the 1st row to `<td>` tags.
+    -   Converted dates from `mm/dd/yyyy` to `mm/dd/yy`.
 
-    I intend to change at least 2 more things in here... listed below. [Example](http://www-01.ibm.com/support/docview.wss?rs=2044&uid=swg24024682).
+    I intend to change at least 1 more thing in here... listed below. [Example](http://www-01.ibm.com/support/docview.wss?rs=2044&uid=swg24024682).
++   In converting `<tt>` to `<pre>` tags, I set the `<pre>` tags' width to always be 443. However, some of these tags are in (nested) lists. The widths now compensate for parental margins and padding. [Example](http://www-01.ibm.com/support/docview.wss?rs=3352&context=SSDV2W&dc=D400&uid=swg24023138&loc=en_US&cs=UTF-8&lang=en&rss=ct3352rational).
 
 Fixes
 -----
@@ -41,5 +43,3 @@ Plans
 There are more fixes and squeezings that need to be done:
 
 +   Remove Download Director links.
-+   Convert dates from `mm/dd/yyyy` to `mm/dd/yy`.
-+   In converting `<tt>` to `<pre>` tags, I set the `<pre>` tags' width to always be 443. However, some of these tags are in (nested) lists. I need to find the calculated margin from the left of `#multi-column-div` and compensate. [Example](http://www-01.ibm.com/support/docview.wss?rs=3352&context=SSDV2W&dc=D400&uid=swg24023138&loc=en_US&cs=UTF-8&lang=en&rss=ct3352rational).

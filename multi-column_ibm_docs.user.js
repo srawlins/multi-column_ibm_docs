@@ -113,6 +113,7 @@ hideNavSetup();
 tt2pre();
 cleanupBorderedTables();
 removeSingleChildUls();
+shrinkPres();
 squeezeWideTables();
 
 function makeMultiColumn() {
@@ -220,6 +221,14 @@ function computedWidth( elm ) {
   width = document.defaultView.getComputedStyle( elm, "" ).getPropertyValue( "width" );
   width = width.split( 'px' )[0]*1;
   return width;
+}
+
+function computedLeftGap( elm ) {
+  padding = document.defaultView.getComputedStyle( elm, "" ).getPropertyValue( "padding-left" );
+  padding = padding.split( 'px' )[0]*1;
+  margin  = document.defaultView.getComputedStyle( elm, "" ).getPropertyValue( "margin-left" );
+  margin  = margin.split( 'px' )[0]*1;
+  return (padding+margin);
 }
 
 function tdStyleToDivStyle(cell) {
@@ -362,11 +371,6 @@ function removeSingleChildUls() {
     ul.parentNode.insertBefore(ulReplacement, ul);
     ulReplacement.innerHTML = ul.innerHTML;
     ul.parentNode.removeChild(ul);
-    
-    // for (var j = ul.childNodes.length - 1; j >= 0; j--) {
-      // child = ul.childNodes[j];
-      // ul.parentNode.insertBefore(child, ul);
-    // }
   }
 }
 
@@ -471,6 +475,22 @@ function tt2pre() {
     '  width: 443px;\n' +
     '}'
   );
+}
+
+function shrinkPres() {
+  var pres = document.evaluate("//pre",
+    document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  
+  for (var i = pres.snapshotLength - 1; i >= 0; i--) {
+    var pre = pres.snapshotItem(i);
+    var sumGap = 0;
+    var parent = pre.parentNode;
+    while ( parent.id == null || !parent.id.match(/^d\d_\d/) ) {
+      sumGap += computedLeftGap( parent );
+      parent = parent.parentNode;
+    }
+    pre.style.width = (computedWidth(pre) - sumGap) + "px";
+  }
 }
 
 function cleanupBorderedTables() {
@@ -606,6 +626,22 @@ function squeezeWideTables() {
         var td = document.createElement("td");
         td.innerHTML = ths[k].innerHTML;
         ths[k].parentNode.replaceChild(td, ths[k]);
+      }
+    }
+    
+    width = computedWidth( table );
+    if ( width < 443 + 10 ) { continue; }
+    
+    dateRe = /^\d{1,2}\/\d{1,2}\/(\d{4})$/
+    // Starting at j = 1 skips the Header row
+    for ( var j = 1; j < trs.children.length; j++ ) {
+      tr = trs.getElementsByTagName("tr")[j];
+      tds = tr.getElementsByTagName("td");
+      for ( var k in tds ) {
+        var match = dateRe.exec( tds[k].innerHTML );
+        if ( match != null && match.length > 1 ) {
+          tds[k].innerHTML = match[0].replace( match[1], match[1].substr(2,2) );
+        }
       }
     }
   }
