@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Multi-column IBM Documents
-// @namespace      n/a
+// @namespace      srawlins
 // @description    Multi-columns IBM Support Documents
 // @include        http://www-01.ibm.com/support/docview.wss*
 // ==/UserScript==
